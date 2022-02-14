@@ -1,3 +1,5 @@
+import os
+
 import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,166 +7,181 @@ from math import sin, radians, cos
 
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
+PATH_IMG = 'static/img'
+
+if not os.path.exists(PATH_IMG):
+    os.makedirs(PATH_IMG)
+
 matplotlib.use('TkAgg')
 
 
-def square_draw(side):
-    x = np.array([0, 0, 0 + side, 0 + side, 0])
-    y = np.array([0, 0 + side, 0 + side, 0, 0])
+class Draw:
 
-    plt.plot(x, y)
-    plt.savefig('static/img/square.png')
-    plt.close()
+    def __init__(self, projection='2d'):
+        fig = plt.figure()
+        if projection == '2d':
+            self.ax = fig.add_subplot(111)
+            self.ax.set_aspect('equal')
+        elif projection == '3d':
+            self.ax = fig.add_subplot(111, projection='3d')
 
+    @staticmethod
+    def square_draw(side):
 
-def rectangle_draw(length, width):
-    x = np.array([0, 0, 0 + length, 0 + length, 0])
-    y = np.array([0, 0 + width, 0 + width, 0, 0])
+        x = np.array([0, 0, 0 + side, 0 + side, 0])
+        y = np.array([0, 0 + side, 0 + side, 0, 0])
 
-    plt.plot(x, y)
-    plt.savefig('static/img/rectangle.png')
-    plt.close()
+        plt.plot(x, y)
+        plt.savefig(f'{PATH_IMG}/square.png')
+        plt.close()
 
+    @staticmethod
+    def rectangle_draw(length, width):
 
-def triangle_draw(side_a, side_b, angle):
-    x = np.array([0, side_a, side_a + cos(radians(180 - angle)) * side_b, 0])
-    y = np.array([0, 0, side_b * cos(radians(90 - angle)), 0])
+        x = np.array([0, 0, 0 + length, 0 + length, 0])
+        y = np.array([0, 0 + width, 0 + width, 0, 0])
 
-    plt.plot(x, y)
-    plt.savefig('static/img/triangle.png')
-    plt.close()
+        plt.plot(x, y)
+        plt.savefig(f'{PATH_IMG}/rectangle.png')
+        plt.close()
 
+    @staticmethod
+    def triangle_draw(side_a, side_b, angle):
 
-def rhomb_draw(side, angle):
-    second_angle = (360 - 2 * angle) / 2
+        x = np.array([0, side_a, side_a + cos(radians(180 - angle)) * side_b, 0])
+        y = np.array([0, 0, side_b * cos(radians(90 - angle)), 0])
 
-    x = np.array([0, 0 - side * cos(radians(angle)),
-                  0, 0 - side * cos(radians(second_angle)), 0])
+        plt.plot(x, y)
+        plt.savefig(f'{PATH_IMG}/triangle.png')
+        plt.close()
 
-    y = np.array([0, 0 + side * sin(radians(angle)),
-                  (0 + side * sin(radians(angle)) + side * sin(radians(second_angle))),
-                  0 + side * sin(radians(angle)), 0])
+    @staticmethod
+    def circle_draw(radius):
 
-    plt.plot(x, y)
-    plt.savefig('static/img/rhomb.png')
-    plt.close()
+        theta = np.linspace(0, 2 * np.pi, 150)
 
+        a = radius * np.cos(theta)
+        b = radius * np.sin(theta)
 
-def trapezoid_draw(upper_base, lower_base, height):
-    x = np.array([0, lower_base, lower_base, lower_base - upper_base, 0])
-    y = np.array([0, 0, height, height, 0])
+        plt.plot(a, b)
+        plt.savefig(f'{PATH_IMG}/circle.png')
+        plt.close()
 
-    plt.plot(x, y)
-    plt.savefig('static/img/trapezoid.png')
-    plt.close()
+    @staticmethod
+    def rhomb_draw(side, angle):
 
+        second_angle = (360 - 2 * angle) / 2
 
-def sphere_draw(radius):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+        x = np.array([0, 0 - side * cos(radians(angle)),
+                      0, 0 - side * cos(radians(second_angle)), 0])
 
-    u = np.linspace(0, 2 * np.pi, 100)
-    v = np.linspace(0, np.pi, 100)
+        y = np.array([0, 0 + side * sin(radians(angle)),
+                      (0 + side * sin(radians(angle)) + side * sin(radians(second_angle))),
+                      0 + side * sin(radians(angle)), 0])
 
-    x = radius * np.outer(np.cos(u), np.sin(v))
-    y = radius * np.outer(np.sin(u), np.sin(v))
-    z = radius * np.outer(np.ones(np.size(u)), np.cos(v))
-    ax.plot_surface(x, y, z, color="b")
+        plt.plot(x, y)
+        plt.savefig(f'{PATH_IMG}/rhomb.png')
+        plt.close()
 
-    plt.savefig('static/img/sphere.png')
-    plt.close()
+    @staticmethod
+    def trapezoid_draw(upper_base, lower_base, height):
+        x = np.array([0, lower_base, lower_base, lower_base - upper_base, 0])
+        y = np.array([0, 0, height, height, 0])
 
+        plt.plot(x, y)
+        plt.savefig(f'{PATH_IMG}/trapezoid.png')
+        plt.close()
 
-def cube_draw(side):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    def sphere_draw(self, radius):
 
-    v = np.array(
-        [[0, 0, 0], [0, side, 0], [side, side, 0], [side, 0, 0], [0, 0, side], [0, side, side], [side, side, side],
-         [side, 0, side]])
-    ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+        u = np.linspace(0, 2 * np.pi, 100)
+        v = np.linspace(0, np.pi, 100)
 
-    verts = [[v[0], v[1], v[2], v[3]], [v[0], v[1], v[5], v[4]], [v[1], v[2], v[6], v[5]], [v[2], v[3], v[7], v[6]],
-             [v[0], v[3], v[7], v[4]], [v[4], v[5], v[6], v[7]]]
+        x = radius * np.outer(np.cos(u), np.sin(v))
+        y = radius * np.outer(np.sin(u), np.sin(v))
+        z = radius * np.outer(np.ones(np.size(u)), np.cos(v))
+        self.ax.plot_surface(x, y, z, color="b")
 
-    ax.add_collection3d(Poly3DCollection(verts,
-                                         facecolors='b', edgecolors='b', alpha=.6))
-    plt.savefig('static/img/cube.png')
-    plt.close()
+        plt.savefig(f'{PATH_IMG}/sphere.png')
+        plt.close()
 
+    def cube_draw(self, side):
 
-def parallelepiped_draw(length, width, height):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+        v = np.array(
+            [[0, 0, 0], [0, side, 0], [side, side, 0], [side, 0, 0], [0, 0, side], [0, side, side], [side, side, side],
+             [side, 0, side]])
+        self.ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
 
-    v = np.array(
-        [[0, 0, 0], [0, width, 0], [length, width, 0], [length, 0, 0], [0, 0, height], [0, width, height],
-         [length, width, height], [length, 0, height]])
-    ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+        verts = [[v[0], v[1], v[2], v[3]], [v[0], v[1], v[5], v[4]], [v[1], v[2], v[6], v[5]], [v[2], v[3], v[7], v[6]],
+                 [v[0], v[3], v[7], v[4]], [v[4], v[5], v[6], v[7]]]
 
-    verts = [[v[0], v[1], v[2], v[3]], [v[0], v[1], v[5], v[4]], [v[1], v[2], v[6], v[5]], [v[2], v[3], v[7], v[6]],
-             [v[0], v[3], v[7], v[4]], [v[4], v[5], v[6], v[7]]]
+        self.ax.add_collection3d(Poly3DCollection(verts,
+                                                  facecolors='b', edgecolors='b', alpha=.6))
+        plt.savefig(f'{PATH_IMG}/cube.png')
+        plt.close()
 
-    ax.add_collection3d(Poly3DCollection(verts,
-                                         facecolors='b', edgecolors='b', alpha=.6))
-    plt.savefig('static/img/parallelepiped.png')
-    plt.close()
+    def parallelepiped_draw(self, length, width, height):
+        self.ax.set_box_aspect(aspect=(length, width, height))
 
+        v = np.array(
+            [[0, 0, 0], [0, width, 0], [length, width, 0], [length, 0, 0], [0, 0, height], [0, width, height],
+             [length, width, height], [length, 0, height]])
+        self.ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
 
-def cylinder_draw(radius, height):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+        verts = [[v[0], v[1], v[2], v[3]], [v[0], v[1], v[5], v[4]], [v[1], v[2], v[6], v[5]], [v[2], v[3], v[7], v[6]],
+                 [v[0], v[3], v[7], v[4]], [v[4], v[5], v[6], v[7]]]
 
-    z = np.linspace(0, height, 100)
-    theta = np.linspace(0, 2 * np.pi, 100)
-    theta_grid, z_grid = np.meshgrid(theta, z)
-    x_grid = radius * np.cos(theta_grid)
-    y_grid = radius * np.sin(theta_grid)
+        self.ax.add_collection3d(Poly3DCollection(verts,
+                                                  facecolors='b', edgecolors='b', alpha=.6))
+        plt.savefig(f'{PATH_IMG}/parallelepiped.png')
+        plt.close()
 
-    x, y, z = x_grid, y_grid, z_grid
-    ax.plot_surface(x, y, z, color="b")
+    def cylinder_draw(self, radius, height):
 
-    plt.savefig('static/img/cylinder.png')
-    plt.close()
+        z = np.linspace(0, height, 100)
+        theta = np.linspace(0, 2 * np.pi, 100)
+        theta_grid, z_grid = np.meshgrid(theta, z)
+        x_grid = radius * np.cos(theta_grid)
+        y_grid = radius * np.sin(theta_grid)
 
+        x, y, z = x_grid, y_grid, z_grid
 
-def pyramid_draw(side, height):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+        self.ax.set_box_aspect((np.ptp(x), np.ptp(y), np.ptp(z)))
+        self.ax.plot_surface(x, y, z, color="b")
 
-    v = np.array(
-        [[-side, -side, -side], [side, -side, -side], [side, side, -side], [-side, side, -side], [0, 0, height]])
-    ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+        plt.savefig(f'{PATH_IMG}/cylinder.png')
+        plt.close()
 
-    verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
-             [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
+    def pyramid_draw(self, side, height):
 
-    ax.add_collection3d(Poly3DCollection(verts,
-                                         facecolors='b', edgecolors='b', alpha=.8))
+        v = np.array(
+            [[-side, -side, -side], [side, -side, -side], [side, side, -side], [-side, side, -side], [0, 0, height]])
+        self.ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
 
-    plt.savefig('static/img/pyramid.png')
-    plt.close()
+        verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
+                 [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
 
+        self.ax.add_collection3d(Poly3DCollection(verts,
+                                                  facecolors='b', edgecolors='b', alpha=.8))
 
-def cone_draw(radius, height):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+        plt.savefig(f'{PATH_IMG}/pyramid.png')
+        plt.close()
 
-    choose = max(radius, height)
+    def cone_draw(self, radius, height):
 
-    theta = np.linspace(0, 2 * np.pi, 50)
-    r = np.linspace(0, choose, 50)
-    T, R = np.meshgrid(theta, r)
+        choose = max(radius, height)
 
-    X = R * np.sin(T)
-    Y = R * np.cos(T)
-    Z = (np.sqrt(X ** 2 + Y ** 2) / (radius / height))
+        theta = np.linspace(0, 2 * np.pi, 50)
+        r = np.linspace(0, choose, 50)
+        T, R = np.meshgrid(theta, r)
 
-    ax.plot_wireframe(X, Y, Z)
-    ax.invert_zaxis()
+        x = R * np.sin(T)
+        y = R * np.cos(T)
+        z = (np.sqrt(x ** 2 + y ** 2) / (radius / height))
 
-    plt.savefig('static/img/cone.png')
-    plt.close()
+        self.ax.set_box_aspect((np.ptp(x), np.ptp(y), np.ptp(z)))
+        self.ax.plot_wireframe(x, y, z)
+        self.ax.invert_zaxis()
 
-
-parallelepiped_draw(2.5, 6.5, 8.6)
+        plt.savefig(f'{PATH_IMG}/cone.png')
+        plt.close()

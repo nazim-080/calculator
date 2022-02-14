@@ -19,9 +19,9 @@ def square_view():
     form = SquareForm()
 
     if form.validate_on_submit():
-        square = Square(form.side.data)
-        area = square.area()
-        square_draw(form.side.data)
+        square = Square(side=form.side.data)
+        area = square.get_area()
+        Draw().square_draw(form.side.data)
         return render_template('square.html', form=form, area=area, title=Square.get_title())
 
     return render_template('square.html', form=form, title=Square.get_title())
@@ -32,9 +32,9 @@ def rectangle_view():
     form = RectangleForm()
 
     if form.validate_on_submit():
-        rectangle = Rectangle(form.length.data, form.width.data)
-        area = rectangle.area()
-        rectangle_draw(form.length.data, form.width.data)
+        rectangle = Rectangle(length=form.length.data, width=form.width.data)
+        area = rectangle.get_area()
+        Draw().rectangle_draw(form.length.data, form.width.data)
         return render_template('rectangle.html', form=form, area=area, title=Rectangle.get_title())
 
     return render_template('rectangle.html', form=form, title=Rectangle.get_title())
@@ -49,9 +49,9 @@ def triangle_view():
                       2 * form.side_a.data * form.side_b.data * cos(radians(form.angle.data)))
         print(side_c)
         if Triangle.check(form.side_a.data, form.side_b.data, side_c):
-            triangle = Triangle(form.side_a.data, form.side_b.data, form.angle.data)
-            area = triangle.area()
-            triangle_draw(form.side_a.data, form.side_b.data, form.angle.data)
+            triangle = Triangle(side_a=form.side_a.data, side_b=form.side_b.data, angle=form.angle.data)
+            area = triangle.get_area()
+            Draw().triangle_draw(form.side_a.data, form.side_b.data, form.angle.data)
             return render_template('triangle.html', form=form, area=area, title=Triangle.get_title())
         else:
             flash('Площадь для треугольника по введенным данным не удалось найти. Проверьте введенные данные.')
@@ -64,9 +64,9 @@ def trapezoid_view():
     form = TrapezoidForm()
 
     if form.validate_on_submit():
-        trapezoid = Trapezoid(form.upper_base.data, form.lower_base.data, form.height.data)
-        area = trapezoid.area()
-        trapezoid_draw(form.upper_base.data, form.lower_base.data, form.height.data)
+        trapezoid = Trapezoid(upper_base=form.upper_base.data, lower_base=form.lower_base.data, height=form.height.data)
+        area = trapezoid.get_area()
+        Draw().trapezoid_draw(form.upper_base.data, form.lower_base.data, form.height.data)
         return render_template('trapezoid.html', form=form, area=area, title=Trapezoid.get_title())
 
     return render_template('trapezoid.html', form=form, title=Trapezoid.get_title())
@@ -77,9 +77,9 @@ def rhomb_view():
     form = RhombForm()
 
     if form.validate_on_submit():
-        rhomb = Rhomb(form.side.data, form.angle.data)
-        area = rhomb.area()
-        rhomb_draw(form.side.data, form.angle.data)
+        rhomb = Rhomb(side=form.side.data, angle=form.angle.data)
+        area = rhomb.get_area()
+        Draw().rhomb_draw(form.side.data, form.angle.data)
         return render_template('rhomb.html', form=form, area=area, title=Rhomb.get_title())
 
     return render_template('rhomb.html', form=form, title=Rhomb.get_title())
@@ -90,8 +90,9 @@ def circle_view():
     form = CircleForm()
 
     if form.validate_on_submit():
-        circle = Circle(form.radius.data)
-        area = circle.area()
+        circle = Circle(radius=form.radius.data)
+        area = circle.get_area()
+        Draw().circle_draw(form.radius.data)
         return render_template('circle.html', form=form, area=area, title=Circle.get_title())
 
     return render_template('circle.html', form=form, title=Circle.get_title())
@@ -102,10 +103,10 @@ def pyramid_view():
     form = PyramidForm()
 
     if form.validate_on_submit():
-        pyramid = Pyramid(form.base_side.data, form.height.data)
-        area = pyramid.area()
-        volume = pyramid.volume()
-        pyramid_draw(form.base_side.data, form.height.data)
+        pyramid = Pyramid(base_side=form.base_side.data, height=form.height.data)
+        area = pyramid.get_area()
+        volume = pyramid.get_volume()
+        Draw('3d').pyramid_draw(form.base_side.data, form.height.data)
         return render_template('pyramid.html', form=form, area=area, title=Pyramid.get_title(), volume=volume)
 
     return render_template('pyramid.html', form=form, title=Pyramid.get_title())
@@ -116,10 +117,10 @@ def cube_view():
     form = CubeForm()
 
     if form.validate_on_submit():
-        cube = Cube(form.side.data)
-        area = cube.area()
-        volume = cube.volume()
-        cube_draw(form.side.data)
+        cube = Cube(side=form.side.data)
+        area = cube.get_area()
+        volume = cube.get_volume()
+        Draw('3d').cube_draw(form.side.data)
         return render_template('cube.html', form=form, area=area, title=Cube.get_title(), volume=volume)
 
     return render_template('cube.html', form=form, title=Cube.get_title())
@@ -130,10 +131,10 @@ def sphere_view():
     form = SphereForm()
 
     if form.validate_on_submit():
-        sphere = Sphere(form.radius.data)
-        area = sphere.area()
-        volume = sphere.volume()
-        sphere_draw(form.radius.data)
+        sphere = Sphere(radius=form.radius.data)
+        area = sphere.get_area()
+        volume = sphere.get_volume()
+        Draw('3d').sphere_draw(form.radius.data)
         return render_template('sphere.html', form=form, area=area, title=Sphere.get_title(), volume=volume)
 
     return render_template('sphere.html', form=form, title=Sphere.get_title())
@@ -144,11 +145,12 @@ def parallelepiped_view():
     form = ParallelepipedForm()
 
     if form.validate_on_submit():
-        parallelepiped = Parallelepiped(form.length.data, form.width.data, form.height.data)
-        area = parallelepiped.area()
-        volume = parallelepiped.volume()
-        parallelepiped_draw(form.length.data, form.width.data, form.height.data)
-        return render_template('parallelepiped.html', form=form, area=area, title=Parallelepiped.get_title(), volume=volume)
+        parallelepiped = Parallelepiped(length=form.length.data, width=form.width.data, height=form.height.data)
+        area = parallelepiped.get_area()
+        volume = parallelepiped.get_volume()
+        Draw('3d').parallelepiped_draw(form.length.data, form.width.data, form.height.data)
+        return render_template('parallelepiped.html', form=form, area=area, title=Parallelepiped.get_title(),
+                               volume=volume)
 
     return render_template('parallelepiped.html', form=form, title=Parallelepiped.get_title())
 
@@ -158,10 +160,10 @@ def cylinder_view():
     form = CylinderForm()
 
     if form.validate_on_submit():
-        cylinder = Cylinder(form.height.data, form.radius.data)
-        area = cylinder.area()
-        volume = cylinder.volume()
-        cylinder_draw(form.height.data, form.radius.data)
+        cylinder = Cylinder(height=form.height.data, radius=form.radius.data)
+        area = cylinder.get_area()
+        volume = cylinder.get_volume()
+        Draw('3d').cylinder_draw(form.height.data, form.radius.data)
         return render_template('cylinder.html', form=form, area=area, title=Cylinder.get_title(), volume=volume)
 
     return render_template('cylinder.html', form=form, title=Cylinder.get_title())
@@ -172,10 +174,10 @@ def cone_view():
     form = ConeForm()
 
     if form.validate_on_submit():
-        cone = Cone(form.height.data, form.radius.data)
-        area = cone.area()
-        volume = cone.volume()
-        cone_draw(form.height.data, form.radius.data)
+        cone = Cone(height=form.height.data, radius=form.radius.data)
+        area = cone.get_area()
+        volume = cone.get_volume()
+        Draw('3d').cone_draw(form.height.data, form.radius.data)
         return render_template('cone.html', form=form, area=area, title=Cone.get_title(), volume=volume)
 
     return render_template('cone.html', form=form, title=Cone.get_title())

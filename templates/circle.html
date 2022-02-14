@@ -16,5 +16,6 @@
 
 	{% if request.method == 'POST' %}
 		<p>Площадь равна: {{ area }}</p>
+		<img src="{{ url_for('static', filename='img/circle.png') }}" alt="">
 	{% endif %}
 {% endblock %}
