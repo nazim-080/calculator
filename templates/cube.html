@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+	<form action="" method="post">
+		<div class="form-row">
+			{{ form.csrf_token }}
+			<div class="col-3 mb-3">
+				{{ form.side.label(class="form-label") }}:
+				{{ form.side(class="col-3 form-control") }}
+			</div>
+			<p>{{ form.submit(class="btn btn-primary") }}</p>
+		</div>
+	</form>
+
+	{% if request.method == 'POST' %}
+		<p><b>Площадь равна: </b>{{ area }}</p>
+		<p><b>Объем равен: </b>{{ volume }}</p>
+		<img src="{{ url_for('static', filename='img/cube.png') }}" alt="">
+	{% endif %}
+{% endblock %}

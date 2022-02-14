@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+	<form action="" method="post">
+		<div class="form-row">
+			{{ form.csrf_token }}
+			<div class="col-3 mb-3">
+				{{ form.upper_base.label(class="form-label") }}:
+				{{ form.upper_base(class="col-3 form-control") }}
+			</div>
+			<div class="col-3 mb-3">
+				{{ form.lower_base.label(class="form-label") }}:
+				{{ form.lower_base(class="col-3 form-control") }}
+			</div>
+			<div class="col-3 mb-3">
+				{{ form.height.label(class="form-label") }}:
+				{{ form.height(class="col-3 form-control") }}
+			</div>
+			<p>{{ form.submit(class="btn btn-primary") }}</p>
+		</div>
+	</form>
+
+	{% if request.method == 'POST' %}
+		<p>Площадь равна: {{ area }}</p>
+		<img src="{{ url_for('static', filename='img/trapezoid.png') }}" alt="">
+	{% endif %}
+{% endblock %}

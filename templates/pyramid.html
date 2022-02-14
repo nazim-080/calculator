@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+	<form action="" method="post">
+		<div class="form-row">
+			{{ form.csrf_token }}
+			<div class="col-3 mb-3">
+				{{ form.base_side.label(class="form-label") }}:
+				{{ form.base_side(class="col-3 form-control") }}
+			</div>
+			<div class="col-3 mb-3">
+				{{ form.height.label(class="form-label") }}:
+				{{ form.height(class="col-3 form-control") }}
+			</div>
+			<p>{{ form.submit(class="btn btn-primary") }}</p>
+		</div>
+	</form>
+
+	{% if request.method == 'POST' %}
+		<p><b>Площадь равна: </b>{{ area }}</p>
+		<p><b>Объем равен: </b>{{ volume }}</p>
+		<img src="{{ url_for('static', filename='img/pyramid.png') }}" alt="">
+	{% endif %}
+{% endblock %}
