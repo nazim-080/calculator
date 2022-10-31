@@ -5,6 +5,18 @@ from figures import *
 from forms import *
 from figures_draw import *
 
+
+# /********************************************************************
+# * Project Name : zadanie2tp												*
+# * File Name : app.py												*
+# * Programmer : Laypanov Nazim, Volkov Dmitriy, Shuvaev Danila									*
+# * Created : 12 / 10 / 22											*
+# * Last Revision : 22 / 10 / 21										*
+# *						*
+#
+# ********************************************************************/
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sdiefoief968wef238'
 
@@ -47,7 +59,6 @@ def triangle_view():
     if form.validate_on_submit():
         side_c = sqrt(form.side_a.data ** 2 + form.side_b.data ** 2 -
                       2 * form.side_a.data * form.side_b.data * cos(radians(form.angle.data)))
-        print(side_c)
         if Triangle.check(form.side_a.data, form.side_b.data, side_c):
             triangle = Triangle(side_a=form.side_a.data, side_b=form.side_b.data, angle=form.angle.data)
             area = triangle.get_area()
@@ -163,7 +174,7 @@ def cylinder_view():
         cylinder = Cylinder(height=form.height.data, radius=form.radius.data)
         area = cylinder.get_area()
         volume = cylinder.get_volume()
-        Draw('3d').cylinder_draw(form.height.data, form.radius.data)
+        Draw('3d').cylinder_draw(form.radius.data, form.height.data)
         return render_template('cylinder.html', form=form, area=area, title=Cylinder.get_title(), volume=volume)
 
     return render_template('cylinder.html', form=form, title=Cylinder.get_title())

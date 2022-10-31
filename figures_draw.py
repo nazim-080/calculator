@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import matplotlib
 import numpy as np
@@ -7,10 +8,15 @@ from math import sin, radians, cos
 
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-PATH_IMG = 'static/img'
+# /********************************************************************
+# * Project Name : zadanie2tp
+# * File Name : figures_draw.py
+# * Programmer : Laypanov Nazim, Volkov Dmitriy, Shuvaev Danila
+# * Created : 12 / 10 / 22
+# * Last Revision : 22 / 10 / 21
+# ********************************************************************/
 
-if not os.path.exists(PATH_IMG):
-    os.makedirs(PATH_IMG)
+PATH_IMG = Path.cwd() / 'static' / 'img'
 
 matplotlib.use('TkAgg')
 
@@ -32,7 +38,7 @@ class Draw:
         y = np.array([0, 0 + side, 0 + side, 0, 0])
 
         plt.plot(x, y)
-        plt.savefig(f'{PATH_IMG}/square.png')
+        plt.savefig(PATH_IMG / 'square.png')
         plt.close()
 
     @staticmethod
@@ -42,7 +48,7 @@ class Draw:
         y = np.array([0, 0 + width, 0 + width, 0, 0])
 
         plt.plot(x, y)
-        plt.savefig(f'{PATH_IMG}/rectangle.png')
+        plt.savefig(PATH_IMG / 'rectangle.png')
         plt.close()
 
     @staticmethod
@@ -52,7 +58,7 @@ class Draw:
         y = np.array([0, 0, side_b * cos(radians(90 - angle)), 0])
 
         plt.plot(x, y)
-        plt.savefig(f'{PATH_IMG}/triangle.png')
+        plt.savefig(PATH_IMG / 'triangle.png')
         plt.close()
 
     @staticmethod
@@ -64,7 +70,7 @@ class Draw:
         b = radius * np.sin(theta)
 
         plt.plot(a, b)
-        plt.savefig(f'{PATH_IMG}/circle.png')
+        plt.savefig(PATH_IMG / 'circle.png')
         plt.close()
 
     @staticmethod
@@ -80,7 +86,7 @@ class Draw:
                       0 + side * sin(radians(angle)), 0])
 
         plt.plot(x, y)
-        plt.savefig(f'{PATH_IMG}/rhomb.png')
+        plt.savefig(PATH_IMG / 'rhomb.png')
         plt.close()
 
     @staticmethod
@@ -89,7 +95,7 @@ class Draw:
         y = np.array([0, 0, height, height, 0])
 
         plt.plot(x, y)
-        plt.savefig(f'{PATH_IMG}/trapezoid.png')
+        plt.savefig(PATH_IMG / 'trapezoid.png')
         plt.close()
 
     def sphere_draw(self, radius):
@@ -102,7 +108,7 @@ class Draw:
         z = radius * np.outer(np.ones(np.size(u)), np.cos(v))
         self.ax.plot_surface(x, y, z, color="b")
 
-        plt.savefig(f'{PATH_IMG}/sphere.png')
+        plt.savefig(PATH_IMG / 'sphere.png')
         plt.close()
 
     def cube_draw(self, side):
@@ -117,7 +123,7 @@ class Draw:
 
         self.ax.add_collection3d(Poly3DCollection(verts,
                                                   facecolors='b', edgecolors='b', alpha=.6))
-        plt.savefig(f'{PATH_IMG}/cube.png')
+        plt.savefig(PATH_IMG / 'cube.png')
         plt.close()
 
     def parallelepiped_draw(self, length, width, height):
@@ -133,7 +139,7 @@ class Draw:
 
         self.ax.add_collection3d(Poly3DCollection(verts,
                                                   facecolors='b', edgecolors='b', alpha=.6))
-        plt.savefig(f'{PATH_IMG}/parallelepiped.png')
+        plt.savefig(PATH_IMG / 'parallelepiped.png')
         plt.close()
 
     def cylinder_draw(self, radius, height):
@@ -149,7 +155,7 @@ class Draw:
         self.ax.set_box_aspect((np.ptp(x), np.ptp(y), np.ptp(z)))
         self.ax.plot_surface(x, y, z, color="b")
 
-        plt.savefig(f'{PATH_IMG}/cylinder.png')
+        plt.savefig(PATH_IMG / 'cylinder.png')
         plt.close()
 
     def pyramid_draw(self, side, height):
@@ -164,7 +170,7 @@ class Draw:
         self.ax.add_collection3d(Poly3DCollection(verts,
                                                   facecolors='b', edgecolors='b', alpha=.8))
 
-        plt.savefig(f'{PATH_IMG}/pyramid.png')
+        plt.savefig(PATH_IMG / 'pyramid.png')
         plt.close()
 
     def cone_draw(self, radius, height):
@@ -183,5 +189,5 @@ class Draw:
         self.ax.plot_wireframe(x, y, z)
         self.ax.invert_zaxis()
 
-        plt.savefig(f'{PATH_IMG}/cone.png')
+        plt.savefig(PATH_IMG / 'cone.png')
         plt.close()
